@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  overflow-x: clip;
+}
+
+.font-script {
+  font-family: 'Allura', cursive;
+}

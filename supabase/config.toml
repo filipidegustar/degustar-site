@@ -1,0 +1,22 @@
+
+[functions.avisar-pedido-site]
+enabled = true
+verify_jwt = true
+import_map = "./functions/avisar-pedido-site/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/avisar-pedido-site/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/avisar-pedido-site/*.html" ]
+
+[functions.contato-site]
+enabled = true
+verify_jwt = true
+import_map = "./functions/contato-site/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/contato-site/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/contato-site/*.html" ]
