@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import SectionContainer from "./SectionContainer";
 import CTAButton from "./CTAButton";
 import { Building2, ClipboardList, ShieldCheck } from "lucide-react";
+import estruturaImg from "../assets/images/estrutura-degustar.jpg";
+import equipeImg from "../assets/images/equipe-producao.jpg";
+import refeicoesImg from "../assets/images/refeicoes-prontas.jpg";
 
 const solucoes = [
   "Marmitas congeladas para rotina operacional",
@@ -187,11 +190,6 @@ export default function Empresas() {
                 operacionais, garantindo refeições práticas ao longo da rotina,
                 com organização e previsibilidade.
               </p>
-
-              <p className="text-sm text-gray-500">
-                Esse espaço pode futuramente receber um case real, com nome da
-                empresa ou contexto de atendimento.
-              </p>
             </div>
           </div>
 
@@ -210,28 +208,28 @@ export default function Empresas() {
               className="space-y-6 transition-transform duration-150 ease-out"
             >
             <div className="overflow-hidden rounded-[2rem] border border-[#f1e7cf] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
-              <div className="flex h-[260px] items-center justify-center px-6 text-center md:h-[320px]">
-                <p className="font-semibold text-degustar-green">
-                  Produção / estrutura da Degustar
-                </p>
-              </div>
+              <img
+                src={estruturaImg}
+                alt="Estrutura da Degustar"
+                className="h-[260px] w-full object-cover md:h-[320px]"
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="overflow-hidden rounded-2xl border border-[#f1e7cf] bg-white shadow-sm">
-                <div className="flex h-[140px] items-center justify-center px-4 text-center">
-                  <p className="text-sm text-degustar-green">
-                    Equipe em produção
-                  </p>
-                </div>
-              </div>
+              <img
+                src={equipeImg}
+                alt="Equipe em produção"
+                className="h-[140px] w-full object-cover"
+              />
+            </div>
 
               <div className="overflow-hidden rounded-2xl border border-[#f1e7cf] bg-white shadow-sm">
-                <div className="flex h-[140px] items-center justify-center px-4 text-center">
-                  <p className="text-sm text-degustar-green">
-                    Refeições prontas
-                  </p>
-                </div>
+                <img
+                  src={refeicoesImg}
+                  alt="Refeições prontas"
+                  className="h-[140px] w-full object-cover"
+                />
               </div>
             </div>
 

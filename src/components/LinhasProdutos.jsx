@@ -19,7 +19,7 @@ const linhas = [
   {
     titulo: "Fit",
     descricao:
-      "Refeições pensadas para quem busca equilíbrio, mais proteína e ingredientes leves, com muito sabor e praticidade na rotina.",
+      "Refeições pensadas para quem busca equilíbrio e ingredientes leves, com muito sabor e praticidade na rotina.",
     imagem: fitImg,
     icone: Leaf,
     destaque: true,
@@ -28,7 +28,7 @@ const linhas = [
   {
     titulo: "Low Carb",
     descricao:
-      "Opções com menos carboidratos para uma alimentação mais leve e estratégica, sem perder prazer à mesa.",
+      "Opções com menos carboidratos  e mais proteína para uma alimentação estratégica, sem perder prazer à mesa.",
     imagem: lowCarbImg,
     icone: Beef,
     destaque: false,
