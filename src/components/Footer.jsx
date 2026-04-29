@@ -44,14 +44,8 @@ export default function Footer() {
               </li>
 
               <li>
-                <Link to="/combo" className="transition hover:text-white hover:translate-x-0.5 inline-block">
+                <Link to="/produtos" className="transition hover:text-white hover:translate-x-0.5 inline-block">
                   Combos
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/empresas" className="transition hover:text-white hover:translate-x-0.5 inline-block">
-                  Empresas
                 </Link>
               </li>
 

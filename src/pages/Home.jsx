@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Problema from "../components/Problema";
 import Solucao from "../components/Solucao";
@@ -10,13 +9,11 @@ import VideoInstitucional from "../components/VideoInstitucional";
 import Portfolio from "../components/Portfolio";
 import RegiaoEntrega from "../components/RegiaoEntrega";
 import CTAFinal from "../components/CTAFinal";
-import Footer from "../components/Footer";
 import Reveal from "../components/Reveal";
 
 export default function Home() {
   return (
-    <main className="bg-white text-gray-800 pt-16">
-      <Navbar />
+    <>
       <Hero />
 
       <Reveal>
@@ -56,8 +53,6 @@ export default function Home() {
       <Reveal>
         <CTAFinal />
       </Reveal>
-
-      <Footer />
-    </main>
+    </>
   );
 }

@@ -28,7 +28,7 @@ export default function CTAFinal() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
           <CTAButton
-            href="/combo"
+            href="/produtos"
             className="min-w-[220px]"
           >
             Montar meu combo

@@ -204,8 +204,7 @@ export default function RegiaoEntrega() {
             </div>
 
             <CTAButton
-              href="https://wa.me/5551994597667"
-              target="_blank"
+              href="/Contato"
               variant="secondary"
             >
               Consultar entrega

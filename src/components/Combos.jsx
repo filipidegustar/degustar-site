@@ -95,7 +95,7 @@ export default function Combos() {
 
               <div className="relative">
                 <CTAButton
-                  href="/combo"
+                  href="/produtos"
                   variant={combo.principal ? "primary" : "secondary"}
                   className={`w-full ${
                     combo.principal
