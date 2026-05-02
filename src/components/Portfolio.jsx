@@ -137,7 +137,7 @@ export default function Portfolio() {
             categoria="Combos"
             imagem={portfolioCombos}
             modoImagem="contain"
-            imagemClassName="h-[220%] w-[220%]"
+            imagemClassName="h-[218%] w-[218%]"
           />
         </div>
       </div>
