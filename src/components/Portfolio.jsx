@@ -8,18 +8,39 @@ import portfolioLowCarb from "../assets/images/portfolio-lowcarb.jpg";
 import portfolioProducao from "../assets/images/portfolio-producao.jpg";
 import portfolioCombos from "../assets/images/portfolio-combos.jpg";
 
-function Card({ titulo, categoria, imagem, destaque }) {
+function Card({
+  titulo,
+  categoria,
+  imagem,
+  destaque,
+  imagemClassName = "",
+  modoImagem = "cover",
+}) {
+  const imagemCover = modoImagem === "cover";
+
   return (
     <article
       className={`group relative overflow-hidden rounded-[2rem] shadow-[0_14px_40px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_55px_rgba(0,0,0,0.14)] ${
-        destaque ? "min-h-[320px] md:min-h-[580px]" : "min-h-[240px] md:min-h-[185px]"
+        destaque
+          ? "min-h-[320px] md:min-h-[580px]"
+          : "min-h-[240px] md:min-h-[185px]"
       }`}
     >
-      <img
-        src={imagem}
-        alt={titulo}
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-      />
+      {imagemCover ? (
+        <img
+          src={imagem}
+          alt={titulo}
+          className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] ${imagemClassName}`}
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center bg-[#fff7e8]">
+          <img
+            src={imagem}
+            alt={titulo}
+            className={`h-[78%] w-[78%] object-contain transition-transform duration-700 group-hover:scale-[1.04] ${imagemClassName}`}
+          />
+        </div>
+      )}
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/22 to-black/5" />
 
@@ -27,12 +48,12 @@ function Card({ titulo, categoria, imagem, destaque }) {
 
       <div className="relative flex h-full items-end p-5 md:p-6">
         <div className={`${destaque ? "max-w-[70%]" : "max-w-[85%]"}`}>
-          <span className="inline-flex rounded-full border border-white/20 bg-white/14 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm mb-3">
+          <span className="mb-3 inline-flex rounded-full border border-white/20 bg-white/14 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm">
             {categoria}
           </span>
 
           <h3
-            className={`text-white font-semibold leading-tight ${
+            className={`font-semibold leading-tight text-white ${
               destaque ? "text-2xl md:text-[2rem]" : "text-lg md:text-xl"
             }`}
           >
@@ -40,8 +61,9 @@ function Card({ titulo, categoria, imagem, destaque }) {
           </h3>
 
           {destaque && (
-            <p className="mt-3 hidden md:block text-white/85 text-sm leading-relaxed">
-              Uma apresentação pensada para valorizar sabor, praticidade e o cuidado da Degustar.
+            <p className="mt-3 hidden text-sm leading-relaxed text-white/85 md:block">
+              Uma apresentação pensada para valorizar sabor, praticidade e o
+              cuidado da Degustar.
             </p>
           )}
         </div>
@@ -53,23 +75,22 @@ function Card({ titulo, categoria, imagem, destaque }) {
 export default function Portfolio() {
   return (
     <SectionContainer className="bg-white" id="portfolio">
-      <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
-        <span className="inline-flex items-center rounded-full bg-degustar-beige px-4 py-2 text-sm font-medium text-degustar-green shadow-sm mb-6">
+      <div className="mx-auto mb-12 max-w-3xl text-center md:mb-16">
+        <span className="mb-6 inline-flex items-center rounded-full bg-degustar-beige px-4 py-2 text-sm font-medium text-degustar-green shadow-sm">
           Qualidade que também se vê
         </span>
 
-        <h2 className="text-3xl md:text-5xl font-bold text-degustar-green mb-4">
+        <h2 className="mb-4 text-3xl font-bold text-degustar-green md:text-5xl">
           Nosso Portfólio
         </h2>
 
-        <p className="text-lg text-gray-700 leading-relaxed">
+        <p className="text-lg leading-relaxed text-gray-700">
           Imagens que traduzem a apresentação, o cuidado e a qualidade presentes
           em cada detalhe da Degustar.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
-        
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
         {/* BLOCO SUPERIOR */}
         <div className="md:col-span-2">
           <Card
@@ -80,18 +101,20 @@ export default function Portfolio() {
           />
         </div>
 
-        {/* COLUNA DIREITA (3 CARDS AGORA) */}
+        {/* COLUNA DIREITA */}
         <div className="flex flex-col gap-5 md:gap-6">
           <Card
             titulo="Linha Tradicional"
             categoria="Sabores"
             imagem={portfolioTradicional}
           />
+
           <Card
             titulo="Linha Fit"
             categoria="Equilíbrio"
             imagem={portfolioFit}
           />
+
           <Card
             titulo="Linha Low Carb"
             categoria="Leveza"
@@ -110,14 +133,16 @@ export default function Portfolio() {
 
         <div className="md:col-span-2">
           <Card
-            titulo="Combos Degustar"
-            categoria="Praticidade"
+            titulo="Combos para facilitar sua rotina"
+            categoria="Combos"
             imagem={portfolioCombos}
+            modoImagem="contain"
+            imagemClassName="h-[220%] w-[220%]"
           />
         </div>
       </div>
 
-      <div className="mt-10 md:mt-12 text-center">
+      <div className="mt-10 text-center md:mt-12">
         <CTAButton
           href="https://www.instagram.com/degustar.adriana/"
           target="_blank"
