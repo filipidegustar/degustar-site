@@ -13,8 +13,8 @@ function Card({
   categoria,
   imagem,
   destaque,
-  imagemClassName = "",
   modoImagem = "cover",
+  imagemSize = "78%",
 }) {
   const imagemCover = modoImagem === "cover";
 
@@ -30,20 +30,23 @@ function Card({
         <img
           src={imagem}
           alt={titulo}
-          className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] ${imagemClassName}`}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-[#fff7e8]">
           <img
             src={imagem}
             alt={titulo}
-            className={`h-[78%] w-[78%] object-contain transition-transform duration-700 group-hover:scale-[1.04] ${imagemClassName}`}
+            style={{
+              width: imagemSize,
+              height: imagemSize,
+            }}
+            className="object-contain transition-transform duration-700 group-hover:scale-[1.04]"
           />
         </div>
       )}
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/22 to-black/5" />
-
       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.14),transparent_38%,rgba(40,88,72,0.18))]" />
 
       <div className="relative flex h-full items-end p-5 md:p-6">
@@ -137,7 +140,7 @@ export default function Portfolio() {
             categoria="Combos"
             imagem={portfolioCombos}
             modoImagem="contain"
-            imagemClassName="h-[218%] w-[218%]"
+            imagemSize="220%"
           />
         </div>
       </div>
