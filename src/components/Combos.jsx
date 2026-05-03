@@ -1,29 +1,34 @@
 import SectionContainer from "./SectionContainer";
 import CTAButton from "./CTAButton";
+import { Link } from "react-router-dom";
 
 const combos = [
   {
-    titulo: "Combo 5",
+    titulo: "PROVAR & AMAR",
+    subtitulo: "Combo 5",
     descricao: "Ideal para conhecer os sabores da Degustar com praticidade.",
     destaque: "",
     principal: false,
   },
   {
-    titulo: "Combo 10",
+    titulo: "SEMANA TRANQUILA",
+    subtitulo: "Combo 10",
     descricao: "Uma escolha equilibrada para unir praticidade e ótimo aproveitamento.",
     destaque: "Mais pedido",
     principal: true,
   },
   {
-    titulo: "Combo 15",
+    titulo: "ROTINA LEVE",
+    subtitulo: "Combo 15",
     descricao: "Mais variedade para facilitar sua rotina com ainda mais conveniência.",
     destaque: "",
     principal: false,
   },
   {
-    titulo: "Combo 20",
+    titulo: "VIDA PRÁTICA",
+    subtitulo: "Combo 20",
     descricao: "O melhor aproveitamento para quem busca praticidade no dia a dia.",
-    destaque: "Mais vendido",
+    destaque: "Mais econômico",
     principal: true,
   },
 ];
@@ -85,26 +90,32 @@ export default function Combos() {
                 </div>
               )}
 
-              <h3 className="relative text-2xl font-semibold tracking-tight text-degustar-green mb-3">
+              <h3 className="relative text-2xl font-semibold tracking-tight text-degustar-green mb-2">
                 {combo.titulo}
               </h3>
+
+              <p className="relative text-sm font-semibold uppercase tracking-[0.12em] text-degustar-orange mb-4">
+                {combo.subtitulo.replace("Combo ", "")} Marmitas
+              </p>
 
               <p className="relative text-gray-600 leading-relaxed mb-6 min-h-[72px] text-[15px]">
                 {combo.descricao}
               </p>
 
               <div className="relative">
-                <CTAButton
-                  href="/produtos"
-                  variant={combo.principal ? "primary" : "secondary"}
-                  className={`w-full ${
-                    combo.principal
-                      ? "shadow-[0_12px_26px_-14px_rgba(231,106,62,0.65)]"
-                      : ""
-                  }`}
-                >
-                  Montar combo
-                </CTAButton>
+                <Link to="/produtos" className="block">
+                  <CTAButton
+                    as="span"
+                    variant={combo.principal ? "primary" : "secondary"}
+                    className={`w-full ${
+                      combo.principal
+                        ? "shadow-[0_12px_26px_-14px_rgba(231,106,62,0.65)]"
+                        : ""
+                    }`}
+                  >
+                    Montar combo
+                  </CTAButton>
+                </Link>
               </div>
             </div>
           </div>

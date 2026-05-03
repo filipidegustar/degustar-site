@@ -402,6 +402,13 @@ export default function Produtos() {
     }
   }
 
+  const nomesCombos = {
+    5: "PROVAR & AMAR",
+    10: "SEMANA TRANQUILA",
+    15: "ROTINA LEVE",
+    20: "VIDA PRÁTICA",
+  };
+
   return (
     <>
       <Navbar />
@@ -472,12 +479,12 @@ export default function Produtos() {
                         Combo
                       </p>
 
-                      <h3 className="mt-1 text-4xl font-black text-[#1f4337]">
-                        {quantidade}
+                      <h3 className="mt-1 text-2xl font-black text-[#1f4337] leading-tight">
+                        {nomesCombos[quantidade] || `${quantidade} marmitas`}
                       </h3>
 
                       <p className="mb-6 text-sm text-gray-500">
-                        marmitas
+                        {quantidade} marmitas
                       </p>
 
                       <div className="mb-2">
