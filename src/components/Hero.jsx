@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import CTAButton from "./CTAButton";
 import heroImage from "../assets/images/hero-marmita-premium.jpeg";
 import { Leaf, ChefHat, Snowflake, Truck } from "lucide-react";
@@ -61,17 +62,21 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <CTAButton href="/produtos" className="min-w-[210px] text-base">
-                Monte seu combo
-              </CTAButton>
+              <Link to="/produtos" className="inline-block">
+                <CTAButton as="span" className="min-w-[210px] text-base">
+                  Monte seu combo
+                </CTAButton>
+              </Link>
 
-              <CTAButton
-                href="/produtos"
-                variant="secondary"
-                className="min-w-[210px] text-base bg-white/10 text-white border-white/20 hover:bg-white/15"
-              >
-                Ver produtos
-              </CTAButton>
+              <Link to="/produtos" className="inline-block">
+                <CTAButton
+                  as="span"
+                  variant="secondary"
+                  className="min-w-[210px] text-base bg-white/10 text-white border-white/20 hover:bg-white/15"
+                >
+                  Ver produtos
+                </CTAButton>
+              </Link>
             </div>
 
             <div className="flex flex-wrap gap-3 text-sm text-white/90">
