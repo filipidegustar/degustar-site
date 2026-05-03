@@ -353,7 +353,7 @@ export default function Produtos() {
         quantidade_total: totalSelecionado,
         valor_unitario: precoUnitarioAtual,
         valor_total: valorTotalPedido,
-        status: "novo",
+        atendido: false,
         origem: "site",
       };
 
