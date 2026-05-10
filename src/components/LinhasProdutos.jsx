@@ -1,6 +1,7 @@
 import SectionContainer from "./SectionContainer";
 import CTAButton from "./CTAButton";
 import { UtensilsCrossed, Leaf, Beef, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import tradicionalImg from "../assets/images/linha-tradicional.jpg";
 import fitImg from "../assets/images/linha-fit.jpg";
@@ -111,13 +112,13 @@ export default function LinhasProdutos() {
                     {linha.descricao}
                   </p>
 
-                  <a
-                    href="/produtos"
+                  <Link
+                    to="/produtos"
                     className="inline-flex items-center gap-2 text-sm font-semibold text-degustar-green transition-all duration-300 group-hover:gap-3"
                   >
                     Explorar linha
                     <ArrowRight size={16} />
-                  </a>
+                  </Link>
                 </div>
 
                 {linha.destaque && (

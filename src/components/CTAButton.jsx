@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function CTAButton({
   children,
   href = "#",
@@ -11,19 +13,39 @@ export default function CTAButton({
   const variants = {
     primary:
       "bg-degustar-orange text-white shadow-lg shadow-degustar-orange/20 hover:opacity-90",
+
     secondary:
       "bg-white text-degustar-green border border-degustar-green/20 hover:bg-degustar-beige",
-    dark: "bg-degustar-green text-white hover:opacity-90",
+
+    dark:
+      "bg-degustar-green text-white hover:opacity-90",
   };
 
+  const classes = `${base} ${variants[variant]} ${className}`;
+
+  // Links externos
+  const isExternal =
+    href.startsWith("http") ||
+    href.startsWith("https") ||
+    target === "_blank";
+
+  if (isExternal) {
+    return (
+      <a
+        href={href}
+        target={target}
+        rel={target === "_blank" ? "noreferrer" : undefined}
+        className={classes}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  // Links internos
   return (
-    <a
-      href={href}
-      target={target}
-      rel={target === "_blank" ? "noreferrer" : undefined}
-      className={`${base} ${variants[variant]} ${className}`}
-    >
+    <Link to={href} className={classes}>
       {children}
-    </a>
+    </Link>
   );
 }

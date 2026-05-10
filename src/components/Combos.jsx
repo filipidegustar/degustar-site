@@ -1,6 +1,5 @@
 import SectionContainer from "./SectionContainer";
 import CTAButton from "./CTAButton";
-import { Link } from "react-router-dom";
 
 const combos = [
   {
@@ -103,19 +102,17 @@ export default function Combos() {
               </p>
 
               <div className="relative">
-                <Link to="/produtos" className="block">
-                  <CTAButton
-                    as="span"
-                    variant={combo.principal ? "primary" : "secondary"}
-                    className={`w-full ${
-                      combo.principal
-                        ? "shadow-[0_12px_26px_-14px_rgba(231,106,62,0.65)]"
-                        : ""
-                    }`}
-                  >
-                    Montar combo
-                  </CTAButton>
-                </Link>
+                <CTAButton
+                  href="/produtos"
+                  variant={combo.principal ? "primary" : "secondary"}
+                  className={`w-full ${
+                    combo.principal
+                      ? "shadow-[0_12px_26px_-14px_rgba(231,106,62,0.65)]"
+                      : ""
+                  }`}
+                >
+                  Montar combo
+                </CTAButton>
               </div>
             </div>
           </div>
