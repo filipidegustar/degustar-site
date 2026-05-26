@@ -928,7 +928,7 @@ export default function Produtos() {
                   </p>
 
                   <p className="mt-2 text-sm text-gray-600">
-                    Recebemos seu pedido e entraremos em contato pelo WhatsApp para confirmar os detalhes.
+                    Pronto! Recebemos seu pedido e entraremos em contato pelo WhatsApp para confirmar os detalhes.
                   </p>
                 </div>
 
@@ -1031,7 +1031,7 @@ export default function Produtos() {
                         }))
                       }
                       className="min-h-[90px] w-full rounded-2xl border border-[#eadfbe] px-4 py-3 text-sm outline-none focus:border-[#e76a3e]"
-                      placeholder="Alguma observação sobre o pedido? Se quiser pode inserir seu endereço, dia e horário de entrega"
+                      placeholder="Alguma observação sobre o pedido? Se quiser pode inserir seu endereço, dia e horário de entrega."
                     />
                   </div>
                 </div>
