@@ -1031,7 +1031,7 @@ export default function Produtos() {
                         }))
                       }
                       className="min-h-[90px] w-full rounded-2xl border border-[#eadfbe] px-4 py-3 text-sm outline-none focus:border-[#e76a3e]"
-                      placeholder="Alguma observação sobre o pedido?"
+                      placeholder="Alguma observação sobre o pedido? Se quiser pode inserir seu endereço, dia e horário de entrega"
                     />
                   </div>
                 </div>
