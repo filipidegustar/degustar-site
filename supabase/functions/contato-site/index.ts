@@ -42,8 +42,8 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Site Degustar <onboarding@resend.dev>",
-        to: ["degustarmarmitas@gmail.com"],
+        from: "Site Degustar <contato@degustarsaudavel.com.br>",
+        to: ["contato@degustarsaudavel.com.br"],
         subject: "Novo contato pelo site da Degustar",
         html: `
           <h2>Novo contato pelo site da Degustar</h2>

@@ -19,7 +19,7 @@ export default function Contato() {
 
   const telefone = "(51) 99459-7667";
   const telefoneWhatsapp = "5551994597667";
-  const email = "degustarmarmitas@gmail.com";
+  const email = "contato@degustarsaudavel.com.br";
   const site = "www.degustarsaudavel.com.br";
   const instagram = "https://www.instagram.com/degustar.adriana";
   
@@ -29,7 +29,7 @@ export default function Contato() {
   )}`;
 
   const emailLink = `mailto:${email}?subject=Contato pelo site Degustar&body=${encodeURIComponent(
-    `Nome: ${nome}\n\nMensagem: ${mensagem}`
+    `Nome: ${nome}\nTelefone/WhatsApp: ${telefoneContato}\n\nMensagem: ${mensagem}`
   )}`;
 
   async function enviarFormulario(e) {
