@@ -2,8 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import { supabase } from "../supabase";
 
-const filtros = ["Todas", "Tradicional", "Fit", "Low Carb"];
-const combos = [5, 10, 15, 20];
+const filtros = ["Todas", "Tradicional", "Fit", "Low Carb", "Inverno"];
+
+const LINHA_INVERNO_ID = 8;
+const GRUPO_PADRAO_ID = 1;
+const GRUPO_INVERNO_ID = 2;
+
+const combosPadrao = [5, 10, 15, 20];
+const combosInverno = [5, 10];
+
 const combosMaisVendidos = [10, 20];
 
 function formatarMoeda(valor) {
@@ -23,16 +30,23 @@ function getLinhaBadgeClasses(linha) {
       return "bg-[#ffebb5] text-[#285848]";
     default:
       return "bg-gray-100 text-gray-700";
+    case "Inverno":
+      return "bg-[#eef6ff] text-[#1f4e79]";  
   }
 }
 
-function getComboInfo(totalSelecionado) {
+function getComboInfo(totalSelecionado, tipo = "padrao") {
+  const combos = tipo === "inverno" ? combosInverno : combosPadrao;
+
   if (totalSelecionado === 0) {
     return {
       comboAlvo: 5,
       faltam: 5,
       progresso: 0,
-      mensagem: "Escolha suas primeiras 5 marmitas para montar um combo.",
+      mensagem:
+        tipo === "inverno"
+          ? "Escolha seus primeiros 5 produtos da Linha Inverno para montar um combo."
+          : "Escolha suas primeiras 5 marmitas para montar um combo.",
       destaque: "Comece seu pedido",
     };
   }
@@ -46,7 +60,10 @@ function getComboInfo(totalSelecionado) {
       comboAlvo: comboExato,
       faltam: 0,
       progresso: 100,
-      mensagem: `Você fechou o combo de ${comboExato} marmitas.`,
+      mensagem:
+        tipo === "inverno"
+          ? `Você fechou o combo Inverno de ${comboExato} unidades.`
+          : `Você fechou o combo de ${comboExato} marmitas.`,
       destaque: combosMaisVendidos.includes(comboExato)
         ? "Combo mais pedido ⭐"
         : "Combo fechado",
@@ -70,7 +87,10 @@ function getComboInfo(totalSelecionado) {
       comboAlvo: proximoCombo,
       faltam,
       progresso,
-      mensagem: `Adicione mais ${faltam} marmita${faltam > 1 ? "s" : ""} para liberar o valor do Combo ${proximoCombo}.`,
+      mensagem:
+        tipo === "inverno"
+          ? `Adicione mais ${faltam} produto${faltam > 1 ? "s" : ""} da Linha Inverno para liberar o Combo ${proximoCombo}.`
+          : `Adicione mais ${faltam} marmita${faltam > 1 ? "s" : ""} para liberar o valor do Combo ${proximoCombo}.`,
       destaque: combosMaisVendidos.includes(proximoCombo)
         ? "Combo mais pedido ⭐"
         : "Continue montando seu pedido",
@@ -78,10 +98,13 @@ function getComboInfo(totalSelecionado) {
   }
 
   return {
-    comboAlvo: 20,
+    comboAlvo: combos[combos.length - 1],
     faltam: 0,
     progresso: 100,
-    mensagem: `Você selecionou ${totalSelecionado} marmitas.`,
+    mensagem:
+      tipo === "inverno"
+        ? `Você selecionou ${totalSelecionado} produtos da Linha Inverno.`
+        : `Você selecionou ${totalSelecionado} marmitas.`,
     destaque: "Pedido acima dos combos",
   };
 }
@@ -96,8 +119,8 @@ function normalizarProduto(produto) {
     nome: nomeBase,
     nomeExibicao: codigoBase ? `${codigoBase} - ${nomeBase}` : nomeBase,
     linha: produto.linhas_marmita?.nome || "Tradicional",
-    linha_id: produto.linha_id || 999,
-    grupo_preco_id: produto.linhas_marmita?.grupo_preco_id || null,
+    linha_id: Number(produto.linha_id || 999),
+    grupo_preco_id: Number(produto.linhas_marmita?.grupo_preco_id || 0),
     descricao:
       produto.descricao_site ||
       produto.observacoes ||
@@ -206,21 +229,6 @@ export default function Produtos() {
     );
   }, [carrinho]);
 
-  const comboInfo = useMemo(() => {
-    return getComboInfo(totalSelecionado);
-  }, [totalSelecionado]);
-
-  const regraAtual = useMemo(() => {
-    if (!regrasPreco.length || totalSelecionado <= 0) return null;
-
-    return [...regrasPreco]
-      .reverse()
-      .find((regra) => totalSelecionado >= regra.quantidade_minima);
-  }, [regrasPreco, totalSelecionado]);
-
-  const precoUnitarioAtual = Number(regraAtual?.preco_unitario || 0);
-  const valorTotalPedido = totalSelecionado * precoUnitarioAtual;
-
   const itensSelecionados = useMemo(() => {
     return produtos
       .filter((produto) => carrinho[produto.id] > 0)
@@ -229,6 +237,69 @@ export default function Produtos() {
         quantidade: carrinho[produto.id],
       }));
   }, [carrinho, produtos]);
+
+  const resumoPorGrupo = useMemo(() => {
+  const grupos = {};
+
+  itensSelecionados.forEach((item) => {
+    const grupoId = Number(item.grupo_preco_id || 0);
+
+    if (!grupos[grupoId]) {
+      grupos[grupoId] = {
+        grupo_preco_id: grupoId,
+        linha_id: item.linha_id,
+        linha: item.linha,
+        quantidade: 0,
+        itens: [],
+      };
+    }
+
+    grupos[grupoId].quantidade += item.quantidade;
+    grupos[grupoId].itens.push(item);
+  });
+
+  return Object.values(grupos).map((grupo) => {
+    const regra = [...regrasPreco]
+      .filter((regra) => Number(regra.grupo_preco_id) === Number(grupo.grupo_preco_id))
+      .reverse()
+      .find((regra) => grupo.quantidade >= regra.quantidade_minima);
+
+    const precoUnitario = Number(regra?.preco_unitario || 0);
+    const subtotal = grupo.quantidade * precoUnitario;
+
+    return {
+      ...grupo,
+      regra,
+      precoUnitario,
+      subtotal,
+      tipo: Number(grupo.grupo_preco_id) === GRUPO_INVERNO_ID ? "inverno" : "padrao",
+    };
+  });
+}, [itensSelecionados, regrasPreco]);
+
+const totalPadrao = resumoPorGrupo
+  .filter((grupo) => grupo.tipo === "padrao")
+  .reduce((total, grupo) => total + grupo.quantidade, 0);
+
+const totalInverno = resumoPorGrupo
+  .filter((grupo) => grupo.tipo === "inverno")
+  .reduce((total, grupo) => total + grupo.quantidade, 0);
+
+    const comboInfoPadrao = useMemo(() => {
+  return getComboInfo(totalPadrao, "padrao");
+}, [totalPadrao]);
+
+const comboInfoInverno = useMemo(() => {
+  return getComboInfo(totalInverno, "inverno");
+}, [totalInverno]);
+
+const valorTotalPedido = resumoPorGrupo.reduce(
+  (total, grupo) => total + grupo.subtotal,
+  0
+);
+
+const precoUnitarioAtual =
+  resumoPorGrupo.length === 1 ? resumoPorGrupo[0].precoUnitario : 0;
 
   function adicionarProduto(produtoId) {
     setCarrinho((prev) => ({
@@ -277,8 +348,15 @@ export default function Produtos() {
 
   Total de marmitas: ${totalSelecionado}
 
-  Valor unitário estimado:
-  ${formatarMoeda(precoUnitarioAtual)}
+    Resumo por linha:
+  ${resumoPorGrupo
+    .map(
+      (grupo) =>
+        `• ${grupo.linha}: ${grupo.quantidade} unidade(s) x ${formatarMoeda(
+          grupo.precoUnitario
+        )} = ${formatarMoeda(grupo.subtotal)}`
+    )
+    .join("\n")}
 
   Valor total estimado:
   ${formatarMoeda(valorTotalPedido)}
@@ -334,14 +412,23 @@ export default function Produtos() {
       setEnviandoPedido(true);
       setErroPedido("");
 
-      const itensPedido = itensSelecionados.map((item) => ({
-        produto_id: item.id,
-        codigo: item.codigo,
-        nome: item.nome,
-        nome_exibicao: item.nomeExibicao,
-        linha: item.linha,
-        quantidade: item.quantidade,
-      }));
+      const itensPedido = itensSelecionados.map((item) => {
+        const grupo = resumoPorGrupo.find(
+          (grupo) => grupo.grupo_preco_id === item.grupo_preco_id
+        );
+
+        return {
+          produto_id: item.id,
+          codigo: item.codigo,
+          nome: item.nome,
+          nome_exibicao: item.nomeExibicao,
+          linha: item.linha,
+          grupo_preco_id: item.grupo_preco_id,
+          quantidade: item.quantidade,
+          preco_unitario: grupo?.precoUnitario || 0,
+          subtotal: item.quantidade * (grupo?.precoUnitario || 0),
+        };
+      });
 
       const pedidoPayload = {
         nome_cliente: dadosCliente.nome.trim(),
@@ -351,7 +438,7 @@ export default function Produtos() {
         cupom: dadosCliente.cupom.trim() || null,
         itens: itensPedido,
         quantidade_total: totalSelecionado,
-        valor_unitario: precoUnitarioAtual,
+        valor_unitario: precoUnitarioAtual || null,
         valor_total: valorTotalPedido,
         atendido: false,
         origem: "site",
@@ -443,7 +530,11 @@ export default function Produtos() {
 
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
               {regrasPreco
-                .filter((regra) => regra.quantidade_minima > 1)
+                .filter(
+                  (regra) =>
+                    Number(regra.grupo_preco_id) === GRUPO_PADRAO_ID &&
+                    regra.quantidade_minima > 1
+                )
                 .map((regra) => {
                   const quantidade = regra.quantidade_minima;
 
@@ -506,6 +597,67 @@ export default function Produtos() {
                   );
                 })}
             </div>
+            <div className="mt-10 border-t border-[#eadfbe] pt-8">
+  <div className="mb-6 text-center">
+    <h3 className="text-xl font-bold text-[#1f4337]">
+      Combos Linha Inverno
+    </h3>
+
+    <p className="mt-2 text-sm text-gray-600">
+      Combos exclusivos para sopas e cremes da Linha Inverno.
+    </p>
+  </div>
+
+  <div className="grid gap-5 md:grid-cols-2">
+    {regrasPreco
+      .filter(
+        (regra) =>
+          Number(regra.grupo_preco_id) === GRUPO_INVERNO_ID &&
+          regra.quantidade_minima > 1
+      )
+      .map((regra) => {
+        const quantidade = regra.quantidade_minima;
+        const valorOriginal = quantidade * 19;
+        const valorCombo = quantidade * Number(regra.preco_unitario);
+        const economia = valorOriginal - valorCombo;
+
+        return (
+          <div
+            key={regra.id}
+            className="relative overflow-hidden rounded-3xl border border-[#b9d7ef] bg-[#f4faff] p-6 transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            <p className="text-sm font-semibold uppercase tracking-wide text-[#1f4e79]">
+              Combo Inverno
+            </p>
+
+            <h3 className="mt-1 text-2xl font-black text-[#1f4337] leading-tight">
+              {quantidade} unidades
+            </h3>
+
+            <p className="mb-6 text-sm text-gray-500">
+              Sopas e cremes da Linha Inverno
+            </p>
+
+            <div className="mb-2">
+              <p className="text-sm text-gray-400 line-through">
+                De {formatarMoeda(valorOriginal)}
+              </p>
+
+              <p className="text-3xl font-black text-[#1f4337]">
+                {formatarMoeda(valorCombo)}
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-white px-4 py-3">
+              <p className="text-xs font-medium text-[#1f4e79]">
+                Economia de {formatarMoeda(economia)}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+  </div>
+</div>
           </div>
         )}
 
@@ -634,101 +786,96 @@ export default function Produtos() {
           )}
         </div>
 
-        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-black/5 bg-white/95 backdrop-blur-md">
-          <div className="mx-auto max-w-7xl px-4 py-4 md:px-6">
-            <div className="rounded-3xl border border-[#eadfbe] bg-white px-4 py-4 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] md:px-6">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <div className="min-w-0 flex-1">
-                  <div className="mb-2 flex flex-wrap items-center gap-2">
-                    <span className="text-lg font-bold text-[#1f4337]">
-                      {totalSelecionado} marmita{totalSelecionado !== 1 ? "s" : ""} selecionada
-                      {totalSelecionado !== 1 ? "s" : ""}
-                    </span>
+<div className="fixed inset-x-0 bottom-0 z-50 border-t border-black/5 bg-white/95 backdrop-blur-md">
+  <div className="mx-auto max-w-7xl px-4 py-3 md:px-6">
+    <div className="rounded-2xl border border-[#eadfbe] bg-white px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.06)]">
+      <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="grid gap-3 md:grid-cols-2">
+          {resumoPorGrupo.map((grupo) => {
+            const comboInfoGrupo =
+              grupo.tipo === "inverno" ? comboInfoInverno : comboInfoPadrao;
 
-                    <span className="rounded-full bg-[#fff3e8] px-3 py-1 text-xs font-semibold text-[#c65a2e]">
-                      {comboInfo.destaque}
-                    </span>
-                  </div>
-
-                  <p className="mb-2 text-sm text-gray-600">
-                    {comboInfo.mensagem}
-                  </p>
-
-                  {precoUnitarioAtual > 0 && (
-                    <div className="mb-4 rounded-2xl bg-[#fffaf0] px-4 py-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <p className="text-xs text-gray-500">
-                            Valor unitário atual
-                          </p>
-
-                          <p className="text-lg font-bold text-[#1f4337]">
-                            {formatarMoeda(precoUnitarioAtual)}
-                          </p>
-                        </div>
-
-                        <div className="text-right">
-                          <p className="text-xs text-gray-500">
-                            Total estimado
-                          </p>
-
-                          <p className="text-2xl font-black text-[#e76a3e]">
-                            {formatarMoeda(valorTotalPedido)}
-                          </p>
-                        </div>
-                      </div>
-
-                      <p className="mt-2 text-xs text-gray-500">
-                        Valor estimado. O total final será confirmado no atendimento.
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-[#f1ede2]">
-                    <div
-                      className="h-full rounded-full bg-[#e76a3e] transition-all duration-300"
-                      style={{ width: `${Math.min(comboInfo.progresso, 100)}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex w-full shrink-0 flex-col gap-3 lg:w-auto lg:min-w-[280px]">
-                  <button
-                    type="button"
-                    onClick={() => setResumoAberto(true)}
-                    disabled={totalSelecionado === 0}
-                    className={`inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold transition ${
-                      totalSelecionado === 0
-                        ? "cursor-not-allowed bg-gray-200 text-gray-500"
-                        : "border border-[#285848]/15 bg-[#f7fbf8] text-[#285848] hover:bg-[#eef6f1]"
-                    }`}
-                  >
-                    Ver itens selecionados
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleFinalizarPedido}
-                    disabled={totalSelecionado === 0}
-                    className={`inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold transition ${
-                      totalSelecionado === 0
-                        ? "cursor-not-allowed bg-gray-200 text-gray-500"
-                        : "bg-[#e76a3e] text-white shadow-lg shadow-[#e76a3e]/20 hover:opacity-90"
-                    }`}
-                  >
-                    Finalizar pedido
-                  </button>
-
-                  {totalSelecionado > 0 && totalSelecionado < 20 && comboInfo.faltam > 0 && (
-                    <p className="text-center text-xs text-gray-500 lg:text-right">
-                      Faltam {comboInfo.faltam} para o combo de {comboInfo.comboAlvo}
+            return (
+              <div
+                key={grupo.grupo_preco_id}
+                className="rounded-2xl bg-[#fffaf0] px-4 py-3"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-bold text-[#1f4337]">
+                      {grupo.tipo === "inverno"
+                        ? "Linha Inverno"
+                        : "Tradicional, Fit e Low Carb"}
                     </p>
-                  )}
+
+                    <p className="text-xs text-gray-500">
+                      {grupo.quantidade} item
+                      {grupo.quantidade !== 1 ? "s" : ""} x{" "}
+                      {formatarMoeda(grupo.precoUnitario)}
+                    </p>
+                  </div>
+
+                  <p className="text-lg font-black text-[#e76a3e]">
+                    {formatarMoeda(grupo.subtotal)}
+                  </p>
                 </div>
+
+                {comboInfoGrupo.faltam > 0 && (
+                  <p className="mt-1 text-xs text-gray-500">
+                    Faltam {comboInfoGrupo.faltam} para o combo de{" "}
+                    {comboInfoGrupo.comboAlvo}.
+                  </p>
+                )}
               </div>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-col gap-2 lg:min-w-[240px]">
+          <div className="rounded-2xl bg-[#eef6f1] px-4 py-3">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-bold text-[#1f4337]">
+                Total
+              </p>
+
+              <p className="text-xl font-black text-[#e76a3e]">
+                {formatarMoeda(valorTotalPedido)}
+              </p>
             </div>
           </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => setResumoAberto(true)}
+              disabled={totalSelecionado === 0}
+              className={`inline-flex items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition ${
+                totalSelecionado === 0
+                  ? "cursor-not-allowed bg-gray-200 text-gray-500"
+                  : "border border-[#285848]/15 bg-[#f7fbf8] text-[#285848] hover:bg-[#eef6f1]"
+              }`}
+            >
+              Ver itens
+            </button>
+
+            <button
+              type="button"
+              onClick={handleFinalizarPedido}
+              disabled={totalSelecionado === 0}
+              className={`inline-flex items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition ${
+                totalSelecionado === 0
+                  ? "cursor-not-allowed bg-gray-200 text-gray-500"
+                  : "bg-[#e76a3e] text-white shadow-lg shadow-[#e76a3e]/20 hover:opacity-90"
+              }`}
+            >
+              Finalizar
+            </button>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
       </section>
 
       {resumoAberto && (
@@ -738,7 +885,7 @@ export default function Produtos() {
               <div>
                 <p className="text-sm text-gray-500">Resumo do pedido</p>
                 <h3 className="text-xl font-bold text-[#1f4337]">
-                  {totalSelecionado} marmita{totalSelecionado !== 1 ? "s" : ""} selecionada
+                  {totalSelecionado} item{totalSelecionado !== 1 ? "s" : ""} selecionado
                   {totalSelecionado !== 1 ? "s" : ""}
                 </h3>
               </div>
@@ -763,66 +910,94 @@ export default function Produtos() {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {itensSelecionados.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex gap-4 rounded-2xl border border-[#efe6cc] bg-[#fffdf8] p-4"
-                    >
-                      <div className="h-20 w-24 shrink-0 overflow-hidden rounded-2xl bg-[#f4efe2]">
-                        <img
-                          src={item.imagem}
-                          alt={item.nomeExibicao}
-                          className="h-full w-full object-cover"
-                        />
+                <div className="space-y-6">
+                  {resumoPorGrupo.map((grupo) => (
+                    <div key={grupo.grupo_preco_id}>
+                      <div className="mb-3 rounded-2xl bg-[#fffaf0] px-4 py-3">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-bold text-[#1f4337]">
+                              {grupo.tipo === "inverno"
+                                ? "Linha Inverno"
+                                : "Tradicional, Fit e Low Carb"}
+                            </p>
+
+                            <p className="text-xs text-gray-500">
+                              {grupo.quantidade} item
+                              {grupo.quantidade !== 1 ? "s" : ""} x{" "}
+                              {formatarMoeda(grupo.precoUnitario)}
+                            </p>
+                          </div>
+
+                          <p className="text-lg font-black text-[#e76a3e]">
+                            {formatarMoeda(grupo.subtotal)}
+                          </p>
+                        </div>
                       </div>
 
-                      <div className="min-w-0 flex-1">
-                        <div className="mb-2 flex flex-wrap items-center gap-2">
-                          <h4 className="text-base font-semibold text-[#1f4337]">
-                            {item.nomeExibicao}
-                          </h4>
-
-                          <span
-                            className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${getLinhaBadgeClasses(
-                              item.linha
-                            )}`}
+                      <div className="space-y-4">
+                        {grupo.itens.map((item) => (
+                          <div
+                            key={item.id}
+                            className="flex gap-4 rounded-2xl border border-[#efe6cc] bg-[#fffdf8] p-4"
                           >
-                            {item.linha}
-                          </span>
-                        </div>
+                            <div className="h-20 w-24 shrink-0 overflow-hidden rounded-2xl bg-[#f4efe2]">
+                              <img
+                                src={item.imagem}
+                                alt={item.nomeExibicao}
+                                className="h-full w-full object-cover"
+                              />
+                            </div>
 
-                        <p className="mb-4 text-sm text-gray-600">
-                          {item.descricao}
-                        </p>
+                            <div className="min-w-0 flex-1">
+                              <div className="mb-2 flex flex-wrap items-center gap-2">
+                                <h4 className="text-base font-semibold text-[#1f4337]">
+                                  {item.nomeExibicao}
+                                </h4>
 
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="text-sm font-medium text-gray-500">
-                            Quantidade: {item.quantidade}
-                          </span>
+                                <span
+                                  className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${getLinhaBadgeClasses(
+                                    item.linha
+                                  )}`}
+                                >
+                                  {item.linha}
+                                </span>
+                              </div>
 
-                          <div className="flex items-center gap-2 rounded-xl border border-[#e5e7eb] px-2 py-1">
-                            <button
-                              type="button"
-                              onClick={() => removerProduto(item.id)}
-                              className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f5f5f5] text-lg font-semibold text-[#1f4337] hover:bg-[#ebebeb]"
-                            >
-                              -
-                            </button>
+                              <p className="mb-4 text-sm text-gray-600">
+                                {item.descricao}
+                              </p>
 
-                            <span className="min-w-[24px] text-center text-sm font-bold text-[#1f4337]">
-                              {item.quantidade}
-                            </span>
+                              <div className="flex items-center justify-between gap-3">
+                                <span className="text-sm font-medium text-gray-500">
+                                  Quantidade: {item.quantidade}
+                                </span>
 
-                            <button
-                              type="button"
-                              onClick={() => adicionarProduto(item.id)}
-                              className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f5f5f5] text-lg font-semibold text-[#1f4337] hover:bg-[#ebebeb]"
-                            >
-                              +
-                            </button>
+                                <div className="flex items-center gap-2 rounded-xl border border-[#e5e7eb] px-2 py-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => removerProduto(item.id)}
+                                    className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f5f5f5] text-lg font-semibold text-[#1f4337] hover:bg-[#ebebeb]"
+                                  >
+                                    -
+                                  </button>
+
+                                  <span className="min-w-[24px] text-center text-sm font-bold text-[#1f4337]">
+                                    {item.quantidade}
+                                  </span>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => adicionarProduto(item.id)}
+                                    className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f5f5f5] text-lg font-semibold text-[#1f4337] hover:bg-[#ebebeb]"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
+                        ))}
                       </div>
                     </div>
                   ))}
@@ -831,54 +1006,79 @@ export default function Produtos() {
             </div>
 
             <div className="border-t border-[#f0ead8] bg-[#fffaf0] px-5 py-4 md:px-6">
-              <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">Resumo final</p>
-                  <p className="text-lg font-bold text-[#1f4337]">
-                    {totalSelecionado} marmita{totalSelecionado !== 1 ? "s" : ""} no pedido
-                  </p>
-                  <p className="text-sm text-[#e76a3e]">{comboInfo.mensagem}</p>
+              <div className="mb-4 flex flex-col gap-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-sm text-gray-500">Resumo final</p>
+                    <p className="text-lg font-bold text-[#1f4337]">
+                      {totalSelecionado} item{totalSelecionado !== 1 ? "s" : ""} no pedido
+                    </p>
+                  </div>
 
-                  {precoUnitarioAtual > 0 && (
-                    <div className="mb-4 rounded-2xl bg-[#fffaf0] px-4 py-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <p className="text-xs text-gray-500">
-                            Valor unitário atual
-                          </p>
-
-                          <p className="text-lg font-bold text-[#1f4337]">
-                            {formatarMoeda(precoUnitarioAtual)}
-                          </p>
-                        </div>
-
-                        <div className="text-right">
-                          <p className="text-xs text-gray-500">
-                            Total estimado
-                          </p>
-
-                          <p className="text-2xl font-black text-[#e76a3e]">
-                            {formatarMoeda(valorTotalPedido)}
-                          </p>
-                        </div>
-                      </div>
-
-                      <p className="mt-2 text-xs text-gray-500">
-                        Valor estimado. O total final será confirmado no atendimento.
-                      </p>
-                    </div>
+                  {itensSelecionados.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={limparCarrinho}
+                      className="rounded-xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                    >
+                      Limpar seleção
+                    </button>
                   )}
                 </div>
 
-                {itensSelecionados.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={limparCarrinho}
-                    className="rounded-xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
-                  >
-                    Limpar seleção
-                  </button>
-                )}
+                <div className="grid gap-3 md:grid-cols-2">
+                  {resumoPorGrupo.map((grupo) => {
+                    const comboInfoGrupo =
+                      grupo.tipo === "inverno" ? comboInfoInverno : comboInfoPadrao;
+
+                    return (
+                      <div
+                        key={grupo.grupo_preco_id}
+                        className="rounded-2xl bg-white px-4 py-3"
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-bold text-[#1f4337]">
+                              {grupo.tipo === "inverno"
+                                ? "Linha Inverno"
+                                : "Tradicional, Fit e Low Carb"}
+                            </p>
+
+                            <p className="text-xs text-gray-500">
+                              {grupo.quantidade} item
+                              {grupo.quantidade !== 1 ? "s" : ""} x{" "}
+                              {formatarMoeda(grupo.precoUnitario)}
+                            </p>
+                          </div>
+
+                          <p className="text-lg font-black text-[#e76a3e]">
+                            {formatarMoeda(grupo.subtotal)}
+                          </p>
+                        </div>
+
+                        <p className="mt-2 text-xs text-gray-600">
+                          {comboInfoGrupo.mensagem}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="rounded-2xl bg-[#eef6f1] px-4 py-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-sm font-bold text-[#1f4337]">
+                      Total geral
+                    </p>
+
+                    <p className="text-2xl font-black text-[#e76a3e]">
+                      {formatarMoeda(valorTotalPedido)}
+                    </p>
+                  </div>
+
+                  <p className="mt-1 text-xs text-gray-500">
+                    Valor estimado. O total final será confirmado no atendimento.
+                  </p>
+                </div>
               </div>
 
               <div className="flex flex-col gap-3 md:flex-row">
@@ -912,11 +1112,13 @@ export default function Produtos() {
           <div className="w-full max-w-xl overflow-hidden rounded-3xl bg-white shadow-2xl">
             <div className="border-b border-[#f0ead8] px-5 py-4 md:px-6">
               <h3 className="text-xl font-bold text-[#1f4337]">
-                Finalizar pedido
+                {pedidoEnviado ? "Pedido enviado" : "Finalizar pedido"}
               </h3>
 
               <p className="mt-1 text-sm text-gray-600">
-                Informe seus dados para recebermos o pedido e entrarmos em contato.
+                {pedidoEnviado
+                  ? "Recebemos seu pedido com sucesso."
+                  : "Informe seus dados para recebermos o pedido e entrarmos em contato."}
               </p>
             </div>
 
