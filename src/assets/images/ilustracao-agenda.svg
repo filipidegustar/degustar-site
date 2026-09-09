@@ -1,0 +1,43 @@
+<svg width="400" height="340" viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg">
+  <!-- sombra suave da agenda -->
+  <rect x="78" y="58" width="248" height="230" rx="16" fill="#fde0ec"/>
+
+  <!-- corpo da agenda -->
+  <rect x="70" y="50" width="248" height="230" rx="16" fill="#ffffff" stroke="#9d174d" stroke-width="2.5"/>
+
+  <!-- cabecalho colorido -->
+  <path d="M70,66 C70,57 78,50 87,50 L301,50 C310,50 318,57 318,66 L318,96 L70,96 Z" fill="#ec4899"/>
+
+  <!-- espiral -->
+  <circle cx="110" cy="50" r="7" fill="#ffffff" stroke="#9d174d" stroke-width="2"/>
+  <circle cx="160" cy="50" r="7" fill="#ffffff" stroke="#9d174d" stroke-width="2"/>
+  <circle cx="210" cy="50" r="7" fill="#ffffff" stroke="#9d174d" stroke-width="2"/>
+  <circle cx="260" cy="50" r="7" fill="#ffffff" stroke="#9d174d" stroke-width="2"/>
+
+  <!-- linhas do calendario -->
+  <line x1="90" y1="130" x2="298" y2="130" stroke="#fde0ec" stroke-width="2"/>
+  <line x1="90" y1="160" x2="298" y2="160" stroke="#fde0ec" stroke-width="2"/>
+  <line x1="90" y1="190" x2="298" y2="190" stroke="#fde0ec" stroke-width="2"/>
+  <line x1="90" y1="220" x2="298" y2="220" stroke="#fde0ec" stroke-width="2"/>
+
+  <line x1="150" y1="112" x2="150" y2="250" stroke="#fde0ec" stroke-width="2"/>
+  <line x1="230" y1="112" x2="230" y2="250" stroke="#fde0ec" stroke-width="2"/>
+
+  <!-- dia marcado -->
+  <circle cx="190" cy="175" r="20" fill="#9d174d"/>
+  <path d="M181,175 L188,182 L200,166" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- coracao adesivo -->
+  <path d="M295,110 C291,104 282,106 282,114 C282,122 295,132 295,132 C295,132 308,122 308,114 C308,106 299,104 295,110 Z" fill="#f472b6"/>
+
+  <!-- caneta -->
+  <g transform="rotate(35 345 240)">
+    <rect x="335" y="150" width="16" height="120" rx="4" fill="#9d174d"/>
+    <path d="M335,150 L351,150 L343,132 Z" fill="#db2777"/>
+    <rect x="335" y="205" width="16" height="10" fill="#fde0ec"/>
+  </g>
+
+  <!-- confete -->
+  <circle cx="55" cy="120" r="5" fill="#fbcfe8"/>
+  <circle cx="55" cy="220" r="6" fill="#f9a8d4"/>
+</svg>

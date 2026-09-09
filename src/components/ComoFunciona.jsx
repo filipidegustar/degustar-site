@@ -40,7 +40,7 @@ const passos = [
 export default function ComoFunciona() {
   return (
     <SectionContainer className="relative overflow-hidden bg-degustar-beige">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(40,88,72,0.06),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(231,106,62,0.07),transparent_24%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgb(var(--color-degustar-green)/0.06),transparent_28%),radial-gradient(circle_at_bottom_right,rgb(var(--color-degustar-orange)/0.07),transparent_24%)]" />
 
       <div className="relative">
         <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16">

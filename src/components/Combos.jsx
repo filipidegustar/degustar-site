@@ -64,8 +64,8 @@ export default function Combos() {
             key={combo.titulo}
             className={`group relative overflow-hidden rounded-[1.9rem] p-[1px] transition-all duration-300 hover:-translate-y-1 ${
               combo.principal
-                ? "bg-[linear-gradient(180deg,rgba(231,106,62,0.35),rgba(255,235,181,0.55),rgba(40,88,72,0.08))] shadow-[0_18px_50px_-24px_rgba(40,88,72,0.30)]"
-                : "bg-[linear-gradient(180deg,rgba(40,88,72,0.10),rgba(0,0,0,0.04))] shadow-[0_16px_40px_-28px_rgba(0,0,0,0.22)] hover:shadow-[0_20px_48px_-24px_rgba(40,88,72,0.18)]"
+                ? "bg-[linear-gradient(180deg,rgb(var(--color-degustar-orange)/0.35),rgb(var(--color-degustar-beige)/0.55),rgb(var(--color-degustar-green)/0.08))] shadow-[0_18px_50px_-24px_rgb(var(--color-degustar-green)/0.30)]"
+                : "bg-[linear-gradient(180deg,rgb(var(--color-degustar-green)/0.10),rgba(0,0,0,0.04))] shadow-[0_16px_40px_-28px_rgba(0,0,0,0.22)] hover:shadow-[0_20px_48px_-24px_rgb(var(--color-degustar-green)/0.18)]"
             }`}
           >
             <div
@@ -78,8 +78,8 @@ export default function Combos() {
               <div
                 className={`pointer-events-none absolute inset-x-0 top-0 h-20 ${
                   combo.principal
-                    ? "bg-[radial-gradient(circle_at_top,rgba(231,106,62,0.16),transparent_70%)]"
-                    : "bg-[radial-gradient(circle_at_top,rgba(40,88,72,0.08),transparent_70%)]"
+                    ? "bg-[radial-gradient(circle_at_top,rgb(var(--color-degustar-orange)/0.16),transparent_70%)]"
+                    : "bg-[radial-gradient(circle_at_top,rgb(var(--color-degustar-green)/0.08),transparent_70%)]"
                 }`}
               />
 
@@ -107,7 +107,7 @@ export default function Combos() {
                   variant={combo.principal ? "primary" : "secondary"}
                   className={`w-full ${
                     combo.principal
-                      ? "shadow-[0_12px_26px_-14px_rgba(231,106,62,0.65)]"
+                      ? "shadow-[0_12px_26px_-14px_rgb(var(--color-degustar-orange)/0.65)]"
                       : ""
                   }`}
                 >

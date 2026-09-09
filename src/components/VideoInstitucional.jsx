@@ -39,7 +39,7 @@ export default function VideoInstitucional() {
         </p>
       </div>
 
-      <div className="relative rounded-[2.25rem] border border-white/50 bg-white/70 p-5 md:p-8 shadow-[0_25px_70px_rgba(40,88,72,0.10)] backdrop-blur-sm">
+      <div className="relative rounded-[2.25rem] border border-white/50 bg-white/70 p-5 md:p-8 shadow-[0_25px_70px_rgb(var(--color-degustar-green)/0.10)] backdrop-blur-sm">
         <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-degustar-orange/10 blur-3xl" />
         <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-degustar-green/10 blur-3xl" />
 

@@ -32,7 +32,7 @@ export default function Hero() {
       }}
     >
       {/* lado esquerdo mais sólido, transição gradual para revelar a marmita */}
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(17,66,55,0.96)_0%,rgba(20,72,59,0.92)_22%,rgba(25,79,66,0.80)_38%,rgba(26,78,64,0.55)_52%,rgba(27,76,62,0.28)_66%,rgba(27,76,62,0.08)_80%,rgba(27,76,62,0.00)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(var(--color-degustar-green)/0.96)_0%,rgb(var(--color-degustar-green)/0.92)_22%,rgb(var(--color-degustar-green)/0.80)_38%,rgb(var(--color-degustar-green)/0.55)_52%,rgb(var(--color-degustar-green)/0.28)_66%,rgb(var(--color-degustar-green)/0.08)_80%,rgb(var(--color-degustar-green)/0.00)_100%)]" />
 
       {/* profundidade geral */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/12" />
@@ -45,7 +45,7 @@ export default function Hero() {
                 Alimentação
               </span>
 
-              <span className="font-script block ml-4 sm:ml-6 md:ml-10 lg:ml-12 text-[#f57c20] text-[58px] sm:text-[74px] md:text-[88px] lg:text-[98px] leading-[0.82] drop-shadow-[0_6px_18px_rgba(244,122,42,0.22)] -mt-1">
+              <span className="font-script block ml-4 sm:ml-6 md:ml-10 lg:ml-12 text-degustar-orange text-[58px] sm:text-[74px] md:text-[88px] lg:text-[98px] leading-[0.82] drop-shadow-[0_6px_18px_rgb(var(--color-degustar-orange)/0.22)] -mt-1">
                 Saudável,
               </span>
 

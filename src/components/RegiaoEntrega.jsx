@@ -34,7 +34,7 @@ const diferenciais = [
 export default function RegiaoEntrega() {
   return (
     <SectionContainer className="relative overflow-hidden bg-degustar-beige">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(40,88,72,0.08),transparent_28%),radial-gradient(circle_at_85%_18%,rgba(231,106,62,0.08),transparent_22%),radial-gradient(circle_at_50%_100%,rgba(255,255,255,0.7),transparent_45%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgb(var(--color-degustar-green)/0.08),transparent_28%),radial-gradient(circle_at_85%_18%,rgb(var(--color-degustar-orange)/0.08),transparent_22%),radial-gradient(circle_at_50%_100%,rgba(255,255,255,0.7),transparent_45%)]" />
 
       <div className="relative">
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-14">
@@ -68,53 +68,53 @@ export default function RegiaoEntrega() {
               >
                 <path
                   d="M150 70C220 110 255 150 288 220C314 276 350 322 418 362C470 393 516 438 546 500C572 554 592 617 634 690"
-                  stroke="#285848"
+                  stroke="rgb(var(--color-degustar-green))"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeDasharray="1 14"
                 />
                 <path
                   d="M186 98C238 130 270 168 300 230C325 281 362 326 420 362C470 393 505 432 530 482"
-                  stroke="#285848"
+                  stroke="rgb(var(--color-degustar-green))"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   opacity="0.7"
                 />
                 <path
                   d="M120 160C172 185 212 215 255 265"
-                  stroke="#e76a3e"
+                  stroke="rgb(var(--color-degustar-orange))"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeDasharray="8 12"
                 />
                 <path
                   d="M450 400C500 425 545 468 578 524"
-                  stroke="#e76a3e"
+                  stroke="rgb(var(--color-degustar-orange))"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeDasharray="8 12"
                 />
 
-                <circle cx="150" cy="70" r="10" fill="#285848" />
-                <circle cx="288" cy="220" r="7" fill="#e76a3e" />
-                <circle cx="418" cy="362" r="9" fill="#285848" />
-                <circle cx="546" cy="500" r="7" fill="#e76a3e" />
-                <circle cx="634" cy="690" r="10" fill="#285848" />
+                <circle cx="150" cy="70" r="10" fill="rgb(var(--color-degustar-green))" />
+                <circle cx="288" cy="220" r="7" fill="rgb(var(--color-degustar-orange))" />
+                <circle cx="418" cy="362" r="9" fill="rgb(var(--color-degustar-green))" />
+                <circle cx="546" cy="500" r="7" fill="rgb(var(--color-degustar-orange))" />
+                <circle cx="634" cy="690" r="10" fill="rgb(var(--color-degustar-green))" />
 
-                <circle cx="150" cy="70" r="24" stroke="#285848" strokeWidth="1" />
-                <circle cx="418" cy="362" r="20" stroke="#285848" strokeWidth="1" />
-                <circle cx="634" cy="690" r="24" stroke="#285848" strokeWidth="1" />
+                <circle cx="150" cy="70" r="24" stroke="rgb(var(--color-degustar-green))" strokeWidth="1" />
+                <circle cx="418" cy="362" r="20" stroke="rgb(var(--color-degustar-green))" strokeWidth="1" />
+                <circle cx="634" cy="690" r="24" stroke="rgb(var(--color-degustar-green))" strokeWidth="1" />
 
                 <path
                   d="M650 120C615 165 600 215 604 270C608 325 632 372 680 415"
-                  stroke="#e76a3e"
+                  stroke="rgb(var(--color-degustar-orange))"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   opacity="0.5"
                 />
                 <path
                   d="M90 510C148 495 205 504 252 538C292 567 320 610 338 662"
-                  stroke="#285848"
+                  stroke="rgb(var(--color-degustar-green))"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   opacity="0.45"

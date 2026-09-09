@@ -4,6 +4,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Cores da marca Degustar, como variáveis RGB (sem "rgb()", só os 3 números)
+   para o Tailwind poder aplicar opacidade dinamicamente (ex: /20, /10). */
+:root {
+  --color-degustar-green: 40 88 72;     /* #285848 */
+  --color-degustar-orange: 231 106 62;  /* #e76a3e */
+  --color-degustar-beige: 255 235 181;  /* #ffebb5 */
+}
+
+/* Tema sazonal — Outubro Rosa.
+   Ativado/desativado automaticamente via useTemaSazonal (ver src/hooks). */
+.tema-outubro-rosa {
+  --color-degustar-green: 157 23 77;    /* #9d174d - rosa profundo (substitui o verde) */
+  --color-degustar-orange: 236 72 153;  /* #ec4899 - rosa vibrante (substitui o laranja) */
+  --color-degustar-beige: 253 224 236;  /* #fde0ec - rosa claro (substitui o bege) */
+}
+
 html,
 body,
 #root {

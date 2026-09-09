@@ -47,7 +47,7 @@ function Card({
       )}
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/22 to-black/5" />
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.14),transparent_38%,rgba(40,88,72,0.18))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.14),transparent_38%,rgb(var(--color-degustar-green)/0.18))]" />
 
       <div className="relative flex h-full items-end p-5 md:p-6">
         <div className={`${destaque ? "max-w-[70%]" : "max-w-[85%]"}`}>

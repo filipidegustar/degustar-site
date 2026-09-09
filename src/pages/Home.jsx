@@ -10,10 +10,19 @@ import Portfolio from "../components/Portfolio";
 import RegiaoEntrega from "../components/RegiaoEntrega";
 import CTAFinal from "../components/CTAFinal";
 import Reveal from "../components/Reveal";
+import BannerOutubroRosa from "../components/BannerOutubroRosa";
+import { useTemaSazonal } from "../hooks/useTemaSazonal";
 
 export default function Home() {
+  // Ativa o tema Outubro Rosa automaticamente durante a janela de datas
+  // configurada em useTemaSazonal.js — sem ação manual necessária.
+  // temaAtivo também controla a exibição do banner explicativo abaixo.
+  const temaAtivo = useTemaSazonal();
+
   return (
     <>
+      {temaAtivo && <BannerOutubroRosa />}
+
       <Hero />
 
       <Reveal>

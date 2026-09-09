@@ -1,0 +1,53 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- caule/laço na base -->
+  <path d="M140,150 C150,220 170,260 195,300" stroke="#7c9885" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M250,110 C240,190 215,240 200,300" stroke="#7c9885" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M190,230 C193,260 197,280 200,300" stroke="#7c9885" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+  <!-- folhas -->
+  <ellipse cx="150" cy="200" rx="18" ry="8" fill="#7c9885" transform="rotate(-35 150 200)"/>
+  <ellipse cx="235" cy="170" rx="18" ry="8" fill="#8fa998" transform="rotate(40 235 170)"/>
+  <ellipse cx="185" cy="265" rx="16" ry="7" fill="#7c9885" transform="rotate(-15 185 265)"/>
+
+  <!-- laço na base -->
+  <circle cx="199" cy="308" r="9" fill="#9d174d"/>
+  <path d="M199,308 C175,300 165,320 180,332 C190,338 199,325 199,308 Z" fill="#9d174d"/>
+  <path d="M199,308 C223,300 233,320 218,332 C208,338 199,325 199,308 Z" fill="#9d174d"/>
+
+  <!-- flor 1 (maior, esquerda) -->
+  <g>
+    <ellipse cx="140" cy="118" rx="16" ry="26" fill="#ec4899"/>
+    <ellipse cx="140" cy="118" rx="16" ry="26" fill="#ec4899" transform="rotate(72 140 150)"/>
+    <ellipse cx="140" cy="118" rx="16" ry="26" fill="#ec4899" transform="rotate(144 140 150)"/>
+    <ellipse cx="140" cy="118" rx="16" ry="26" fill="#ec4899" transform="rotate(216 140 150)"/>
+    <ellipse cx="140" cy="118" rx="16" ry="26" fill="#ec4899" transform="rotate(288 140 150)"/>
+    <circle cx="140" cy="150" r="12" fill="#fde0ec"/>
+  </g>
+
+  <!-- flor 2 (menor, direita) -->
+  <g>
+    <ellipse cx="250" cy="84" rx="13" ry="20" fill="#f472b6"/>
+    <ellipse cx="250" cy="84" rx="13" ry="20" fill="#f472b6" transform="rotate(72 250 110)"/>
+    <ellipse cx="250" cy="84" rx="13" ry="20" fill="#f472b6" transform="rotate(144 250 110)"/>
+    <ellipse cx="250" cy="84" rx="13" ry="20" fill="#f472b6" transform="rotate(216 250 110)"/>
+    <ellipse cx="250" cy="84" rx="13" ry="20" fill="#f472b6" transform="rotate(288 250 110)"/>
+    <circle cx="250" cy="110" r="9" fill="#fde0ec"/>
+  </g>
+
+  <!-- flor 3 (central, maior) -->
+  <g>
+    <ellipse cx="190" cy="192" rx="18" ry="30" fill="#db2777"/>
+    <ellipse cx="190" cy="192" rx="18" ry="30" fill="#db2777" transform="rotate(72 190 230)"/>
+    <ellipse cx="190" cy="192" rx="18" ry="30" fill="#db2777" transform="rotate(144 190 230)"/>
+    <ellipse cx="190" cy="192" rx="18" ry="30" fill="#db2777" transform="rotate(216 190 230)"/>
+    <ellipse cx="190" cy="192" rx="18" ry="30" fill="#db2777" transform="rotate(288 190 230)"/>
+    <circle cx="190" cy="230" r="13" fill="#fde0ec"/>
+  </g>
+
+  <!-- flores pequenas / confete -->
+  <circle cx="100" cy="180" r="6" fill="#fbcfe8"/>
+  <circle cx="285" cy="150" r="7" fill="#fbcfe8"/>
+  <circle cx="120" cy="240" r="5" fill="#f9a8d4"/>
+  <circle cx="270" cy="210" r="6" fill="#f9a8d4"/>
+  <circle cx="215" cy="150" r="5" fill="#fbcfe8"/>
+</svg>
