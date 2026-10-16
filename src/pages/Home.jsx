@@ -1,4 +1,5 @@
 import Hero from "../components/Hero";
+import EscolhaPedido from "../components/EscolhaPedido";
 import Problema from "../components/Problema";
 import Solucao from "../components/Solucao";
 import LinhasProdutos from "../components/LinhasProdutos";
@@ -24,6 +25,11 @@ export default function Home() {
       {temaAtivo && <BannerOutubroRosa />}
 
       <Hero />
+
+      {/* Escolha entre marmitas congeladas e Almoço do Dia */}
+      <Reveal>
+        <EscolhaPedido />
+      </Reveal>
 
       <Reveal>
         <Problema />

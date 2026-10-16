@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Produtos from "./pages/Produtos";
 import Contato from "./pages/Contato";
 import OutubroRosa from "./pages/OutubroRosa";
+import Almoco from "./pages/Almoco";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/produtos" element={<Produtos />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/outubro-rosa" element={<OutubroRosa />} />
+          <Route path="/almoco" element={<Almoco />} />
         </Routes>
 
         <Footer />

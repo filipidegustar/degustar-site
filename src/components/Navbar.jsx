@@ -1,17 +1,54 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import logo from "../assets/logo.png";
 
 const links = [
   { label: "Home", to: "/" },
   { label: "Produtos", to: "/produtos" },
   { label: "Monte seu Combo", to: "/produtos" },
+  { label: "Almoço do Dia", to: "/almoco", novo: true },
   { label: "Contato", to: "/contato" },
 ];
 
+// Opções do botão "Fazer pedido"
+const opcoesPedido = [
+  {
+    titulo: "Marmitas congeladas",
+    descricao: "Monte seu combo para o freezer",
+    to: "/produtos",
+  },
+  {
+    titulo: "Almoço do Dia",
+    descricao: "Marmita pronta para consumo, entregue hoje no almoço",
+    to: "/almoco",
+    novo: true,
+  },
+];
+
+function SeloNovo() {
+  return (
+    <span className="ml-1.5 rounded-full bg-degustar-orange px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white">
+      Novo
+    </span>
+  );
+}
+
 export default function Navbar() {
   const [menuAberto, setMenuAberto] = useState(false);
+  const [pedidoAberto, setPedidoAberto] = useState(false);
+  const pedidoRef = useRef(null);
+
+  // Fecha o menu de "Fazer pedido" ao clicar fora
+  useEffect(() => {
+    function aoClicarFora(e) {
+      if (pedidoRef.current && !pedidoRef.current.contains(e.target)) {
+        setPedidoAberto(false);
+      }
+    }
+    document.addEventListener("mousedown", aoClicarFora);
+    return () => document.removeEventListener("mousedown", aoClicarFora);
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-black/5 bg-white/85 backdrop-blur-md">
@@ -30,9 +67,10 @@ export default function Navbar() {
               <Link
                 key={`${item.label}-${item.to}`}
                 to={item.to}
-                className="transition-colors duration-200 hover:text-degustar-green"
+                className="inline-flex items-center transition-colors duration-200 hover:text-degustar-green"
               >
                 {item.label}
+                {item.novo && <SeloNovo />}
               </Link>
             ))}
           </nav>
@@ -47,12 +85,41 @@ export default function Navbar() {
               WhatsApp
             </a>
 
-            <Link
-              to="/produtos" // ALTERADO
-              className="inline-flex items-center justify-center rounded-full bg-degustar-orange px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-degustar-orange/20 transition-all duration-300 hover:scale-[1.02] hover:opacity-90"
-            >
-              Fazer pedido
-            </Link>
+            <div className="relative" ref={pedidoRef}>
+              <button
+                type="button"
+                onClick={() => setPedidoAberto(!pedidoAberto)}
+                aria-expanded={pedidoAberto}
+                className="inline-flex items-center justify-center gap-1.5 rounded-full bg-degustar-orange px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-degustar-orange/20 transition-all duration-300 hover:scale-[1.02] hover:opacity-90"
+              >
+                Fazer pedido
+                <ChevronDown
+                  size={16}
+                  className={`transition-transform ${pedidoAberto ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {pedidoAberto && (
+                <div className="absolute right-0 mt-2 w-72 rounded-2xl border border-black/5 bg-white p-2 shadow-xl">
+                  {opcoesPedido.map((op) => (
+                    <Link
+                      key={op.to}
+                      to={op.to}
+                      onClick={() => setPedidoAberto(false)}
+                      className="block rounded-xl px-4 py-3 transition hover:bg-degustar-beige"
+                    >
+                      <span className="flex items-center font-semibold text-degustar-green">
+                        {op.titulo}
+                        {op.novo && <SeloNovo />}
+                      </span>
+                      <span className="block text-sm text-gray-600">
+                        {op.descricao}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <button
@@ -75,9 +142,10 @@ export default function Navbar() {
                   key={`${item.label}-${item.to}`}
                   to={item.to}
                   onClick={() => setMenuAberto(false)}
-                  className="rounded-xl px-4 py-3 text-gray-700 font-medium transition hover:bg-degustar-beige hover:text-degustar-green"
+                  className="flex items-center rounded-xl px-4 py-3 text-gray-700 font-medium transition hover:bg-degustar-beige hover:text-degustar-green"
                 >
                   {item.label}
+                  {item.novo && <SeloNovo />}
                 </Link>
               ))}
             </nav>
@@ -93,11 +161,19 @@ export default function Navbar() {
               </a>
 
               <Link
-                to="/produtos" // ALTERADO
+                to="/produtos"
+                onClick={() => setMenuAberto(false)}
+                className="inline-flex items-center justify-center rounded-full bg-degustar-green px-5 py-3 font-semibold text-white transition hover:opacity-90"
+              >
+                Pedir congeladas
+              </Link>
+
+              <Link
+                to="/almoco"
                 onClick={() => setMenuAberto(false)}
                 className="inline-flex items-center justify-center rounded-full bg-degustar-orange px-5 py-3 font-semibold text-white transition hover:opacity-90"
               >
-                Fazer pedido
+                Pedir Almoço do Dia
               </Link>
               <Link to="/contato">Contato</Link>
             </div>

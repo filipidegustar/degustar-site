@@ -222,6 +222,20 @@ export default function Produtos() {
     return produtos.filter((produto) => produto.linha === filtroAtivo);
   }, [filtroAtivo, produtos]);
 
+  const temProdutosInverno = useMemo(() => {
+  return produtos.some((produto) => produto.linha_id === LINHA_INVERNO_ID);
+}, [produtos]);
+
+const filtrosVisiveis = useMemo(() => {
+  return filtros.filter((filtro) => filtro !== "Inverno" || temProdutosInverno);
+}, [temProdutosInverno]);
+
+useEffect(() => {
+  if (filtroAtivo === "Inverno" && !temProdutosInverno) {
+    setFiltroAtivo("Todas");
+  }
+}, [filtroAtivo, temProdutosInverno]);
+
   const totalSelecionado = useMemo(() => {
     return Object.values(carrinho).reduce(
       (total, quantidade) => total + quantidade,
@@ -597,7 +611,9 @@ const precoUnitarioAtual =
                   );
                 })}
             </div>
-            <div className="mt-10 border-t border-[#eadfbe] pt-8">
+
+            {temProdutosInverno && (
+<div className="mt-10 border-t border-[#eadfbe] pt-8">
   <div className="mb-6 text-center">
     <h3 className="text-xl font-bold text-[#1f4337]">
       Combos Linha Inverno
@@ -658,11 +674,12 @@ const precoUnitarioAtual =
       })}
   </div>
 </div>
+)}
           </div>
         )}
 
           <div className="mb-10 flex flex-wrap justify-center gap-3">
-            {filtros.map((filtro) => {
+            {filtrosVisiveis.map((filtro) => {
               const ativo = filtro === filtroAtivo;
 
               return (
